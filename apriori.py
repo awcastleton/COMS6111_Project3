@@ -13,7 +13,12 @@ DATASET = 'INTEGRATED-DATASET.csv'
 scriptdir = os.path.dirname(os.path.realpath(__file__))
 
 def main():
-    curated_csv = os.path.join(scriptdir,'INTEGRATED-DATASET.csv')
+    # grab dataset filename from CLI
+    global DATASET
+    if len(sys.argv) > 1: DATASET = sys.argv[1]
+
+    # load data into application
+    curated_csv = os.path.join(scriptdir, DATASET)
 
     print('reading text...')
     with open(curated_csv,'r') as f:
