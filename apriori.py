@@ -19,21 +19,19 @@ def main():
     # load data into application
     curated_csv = os.path.join(scriptdir, DATASET)
 
-    print('reading text...')
+    print('reading text...') # TESTING
     with open(curated_csv,'r') as f:
         raw = f.read()
 
-    print('parsing text into usable data...')
+    print('parsing text into usable data...') # TESTING
     transactions = []
     items = set()
-    for t in raw.split('\n'):
+    for t in raw.split('\n')[:-1]: # don't include last line (which is just an empty string)
         new_itemset = set(map(str.strip,t.split(',')))
         transactions.append(new_itemset)
         items = items | new_itemset
 
-    print(items)
-    print(len(items))
-
+    print('Determining initial frequent items...')
     print(getInitialFrequentItems(transactions,items))
 
 def initCLI():
@@ -49,16 +47,15 @@ def initCLI():
     global CONFIDENCE
     if len(sys.argv) > 4: CONFIDENCE = float(sys.argv[3])
 
-# TODO not working
 def getInitialFrequentItems(transactions, items):
     frequent = set()
     for i in items:
         ct = 0
         for t in transactions:
-            if set(i).issubset(t):
+            if set([i]).issubset(set(t)):
                 ct+=1
         if (ct / len(transactions)) > SUPPORT:
-            frequent = frequent.add(i)
+            frequent.add(i)
     return frequent
 
 # Boolean: is the itemset's frequency greater than the support threshold?
@@ -75,7 +72,7 @@ def isFrequent(transactions,itemset):
     # METHODS NEEDED:
     # TODO: compute confidence of itemset
     # TODO: outer loop of itemset size
-    # TODO: compute INITIAL frequent items (size=1)
+    # TODO: compute INITIAL frequent items (size=1) DONE
     # TODO: 3. compute frequent itemsets (support > threshold, confidence > threshold)
     # TODO: get all subsets of size n (includes pruning impossible itemsets)
     # TODO: 4. build association rules
