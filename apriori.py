@@ -35,7 +35,7 @@ def main():
     frequent = []
     supports = []
 
-    print('Determining initial frequent items...')
+    print('Determining initial frequent items...') # TESTING
     initial_frequent, initial_supports = getInitialFrequentItems(transactions,items)
     frequent.append(initial_frequent)
     supports.append(initial_supports)
