@@ -6,8 +6,8 @@ import sys
 import csv
 import os
 
-CONFIDENCE = 0.3
-SUPPORT = 0.01
+TARGET_CONFIDENCE = 0.3
+TARGET_SUPPORT = 0.15
 DATASET = 'INTEGRATED-DATASET.csv'
 
 scriptdir = os.path.dirname(os.path.realpath(__file__))
@@ -33,54 +33,88 @@ def main():
 
     # This will keep track of frequent itemsets of each size (size-1 = index)
     frequent = []
+    supports = []
 
     print('Determining initial frequent items...')
-    frequent.append(getInitialFrequentItems(transactions,items))
+    initial_frequent, initial_supports = getInitialFrequentItems(transactions,items)
+    frequent.append(initial_frequent)
+    supports.append(initial_supports)
 
     set_size = 2
     cont = True
-    # while cont and len(frequent) == set_size - 1: # TODO flesh out main loop
-    #     frequent.append(getFrequentItemsets(items, transations, frequent,set_size))
+    while cont and len(frequent) == set_size - 1: # TODO flesh out main loop
+        printFrequentItemsets(frequent[set_size-2],supports[set_size-2])
 
-def initCLI():
-    # load dataset filename
-    global DATASET
-    if len(sys.argv) > 1: DATASET = sys.argv[1]
+        # Generate possible itemsets of this size
+        possible_itemsets = generatePossibleItemsets(items, frequent[set_size-2])
 
-    # load mininmum support
-    global SUPPORT
-    if len(sys.argv) > 4: SUPPORT = float(sys.argv[2])
+        # Generate new frequent itemsets of this size and their supports
+        new_frequent, new_supports = getFrequentItemsets(items, transactions, possible_itemsets, set_size)
+        frequent.append(new_frequent)
+        supports.append(new_supports)
 
-    # load minimum confidence
-    global CONFIDENCE
-    if len(sys.argv) > 4: CONFIDENCE = float(sys.argv[3])
+        # continue?
+        cont = len(frequent[set_size-1]) > 0
+        set_size += 1
+
+def printFrequentItemsets(frequent,supports):
+    if (TARGET_SUPPORT * 100).is_integer():
+        print('==Frequent itemsets (min_sup={0}%)'.format(int(TARGET_SUPPORT * 100)) )
+    else:
+        print('==Frequent itemsets (min_sup={0}%)'.format(TARGET_SUPPORT * 100) )
+    for f,s in zip(frequent,supports):
+        print(str(f) + ", %.2f" % (s*100) + '%')
 
 def getInitialFrequentItems(transactions, items):
-    frequent = set()
+    frequent = []
+    supports = []
     for i in items:
         ct = 0
         for t in transactions:
             if set([i]).issubset(set(t)):
                 ct+=1
-        if (ct / len(transactions)) > SUPPORT:
-            frequent.add(i)
-    return list(frequent)
+        support = (ct / len(transactions))
+        if support >= TARGET_SUPPORT:
+            frequent.append([i])
+            supports.append(support)
+
+    # print('Initial Frequent Items: ') # TESTING
+    # print(frequent) # TESTING
+
+    return frequent, supports
 
 # TODO: returns list of frequent itemsets of the given size
-def getFrequentItemsets(items,set_size):
+def getFrequentItemsets(items,transactions,possible_itemsets,set_size):
     frequent = []
-    # TODO
-    return frequent
+    supports = []
 
-# Boolean: is the itemset's frequency greater than the support threshold?
-def isFrequent(transactions,itemset):
+    # Loop through possible itemsets
+    for s in possible_itemsets:
+        ct = 0
+
+        # Record itemset if it passes support threshold
+        support = getSupport(transactions, set(s))
+        if support >= TARGET_SUPPORT:
+            frequent.append(s)
+            supports.append(support)
+
+    return frequent,supports
+
+def generatePossibleItemsets(items, frequent):
+    itemsets = []
+    for s in frequent:
+        itemsets.extend([list(set([i]) | set(s)) for i in items if i not in s])
+    return itemsets
+
+# Returns float value of the support
+def getSupport(transactions,itemset):
     ct = 0
 
     for t in transactions:
-        if itemset.issubset(t):
+        if itemset.issubset(set(t)):
             ct+=1
 
-    passes_support = (ct / len(transactions)) > SUPPORT
+    return (ct / len(transactions))
 
 
     # METHODS NEEDED:
@@ -102,8 +136,21 @@ def isFrequent(transactions,itemset):
         * add assoc. rules to our dict (frozenset -> {'Value':'item','Conf':0.13,'Supp':0.08})
     '''
 
+def initCLI():
+    # load dataset filename
+    global DATASET
+    if len(sys.argv) > 1: DATASET = sys.argv[1]
+
+    # load mininmum support
+    global TARGET_SUPPORT
+    if len(sys.argv) > 4: TARGET_SUPPORT = float(sys.argv[2])
+
+    # load minimum confidence
+    global TARGET_CONFIDENCE
+    if len(sys.argv) > 4: TARGET_CONFIDENCE = float(sys.argv[3])
+
 if __name__ == '__main__':
     if len(sys.argv) > 1: DATASET = sys.argv[1]
-    if len(sys.argv) > 2: SUPPORT = float(sys.argv[2])
-    if len(sys.argv) > 3: CONFIDENCE = float(sys.argv[3])
+    if len(sys.argv) > 2: TARGET_SUPPORT = float(sys.argv[2])
+    if len(sys.argv) > 3: TARGET_CONFIDENCE = float(sys.argv[3])
     sys.exit(main())
