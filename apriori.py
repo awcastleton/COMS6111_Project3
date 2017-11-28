@@ -52,6 +52,9 @@ def main():
         # Generate possible itemsets of this size
         possible_itemsets = generatePossibleItemsets(items, frequent[set_size-2])
 
+        # trim possible items
+        items = trimItems(possible_itemsets)
+
         # Generate new frequent itemsets of this size and their supports
         new_frequent, new_supports = getFrequentItemsets(items, transactions, possible_itemsets, set_size)
         frequent.append(new_frequent)
@@ -60,6 +63,12 @@ def main():
         # continue?
         cont = len(frequent[set_size-1]) > 0
         set_size += 1
+
+def trimItems(itemsets):
+    items = set()
+    for s in itemsets:
+        items |= set(s)
+    return items
 
 def printFrequentItemsets(frequent,supports):
     if (TARGET_SUPPORT * 100).is_integer():
