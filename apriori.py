@@ -7,7 +7,7 @@ import csv
 import os
 
 TARGET_CONFIDENCE = 0.3
-TARGET_SUPPORT = 0.15
+TARGET_SUPPORT = 0.30
 DATASET = 'INTEGRATED-DATASET.csv'
 
 scriptdir = os.path.dirname(os.path.realpath(__file__))
@@ -42,7 +42,8 @@ def main():
 
     set_size = 2
     cont = True
-    while cont and len(frequent) == set_size - 1: # TODO flesh out main loop
+    while cont: # TODO flesh out main loop
+        print('=========== Size ' + str(set_size-1) + ' ===========')
         printFrequentItemsets(frequent[set_size-2],supports[set_size-2])
 
         # Generate possible itemsets of this size
