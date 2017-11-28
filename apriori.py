@@ -13,9 +13,8 @@ DATASET = 'INTEGRATED-DATASET.csv'
 scriptdir = os.path.dirname(os.path.realpath(__file__))
 
 def main():
-    # grab dataset filename from CLI
-    global DATASET
-    if len(sys.argv) > 1: DATASET = sys.argv[1]
+    # read config values from command line
+    initCLI()
 
     # load data into application
     curated_csv = os.path.join(scriptdir, DATASET)
@@ -36,6 +35,19 @@ def main():
     print(len(items))
 
     print(getInitialFrequentItems(transactions,items))
+
+def initCLI():
+    # load dataset filename
+    global DATASET
+    if len(sys.argv) > 1: DATASET = sys.argv[1]
+
+    # load mininmum support
+    global SUPPORT
+    if len(sys.argv) > 4: SUPPORT = float(sys.argv[2])
+
+    # load minimum confidence
+    global CONFIDENCE
+    if len(sys.argv) > 4: CONFIDENCE = float(sys.argv[3])
 
 # TODO not working
 def getInitialFrequentItems(transactions, items):
