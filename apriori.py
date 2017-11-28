@@ -29,7 +29,7 @@ def main():
     for t in raw.split('\n')[:-1]: # don't include last line (which is just an empty string)
         new_itemset = set(map(str.strip,t.split(',')))
         transactions.append(new_itemset)
-        items = items | new_itemset
+        items |= new_itemset
 
     # This will keep track of frequent itemsets of each size (size-1 = index)
     frequent = []
@@ -39,6 +39,9 @@ def main():
     initial_frequent, initial_supports = getInitialFrequentItems(transactions,items)
     frequent.append(initial_frequent)
     supports.append(initial_supports)
+
+    # We only care about frequent items!
+    items &= set([x[0] for x in initial_frequent])
 
     set_size = 2
     cont = True
@@ -69,6 +72,7 @@ def printFrequentItemsets(frequent,supports):
 def getInitialFrequentItems(transactions, items):
     frequent = []
     supports = []
+
     for i in items:
         ct = 0
         for t in transactions:
