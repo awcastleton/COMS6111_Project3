@@ -31,8 +31,16 @@ def main():
         transactions.append(new_itemset)
         items = items | new_itemset
 
+    # This will keep track of frequent itemsets of each size (size-1 = index)
+    frequent = []
+
     print('Determining initial frequent items...')
-    print(getInitialFrequentItems(transactions,items))
+    frequent.append(getInitialFrequentItems(transactions,items))
+
+    set_size = 2
+    cont = True
+    # while cont and len(frequent) == set_size - 1: # TODO flesh out main loop
+    #     frequent.append(getFrequentItemsets(items, transations, frequent,set_size))
 
 def initCLI():
     # load dataset filename
@@ -56,6 +64,12 @@ def getInitialFrequentItems(transactions, items):
                 ct+=1
         if (ct / len(transactions)) > SUPPORT:
             frequent.add(i)
+    return list(frequent)
+
+# TODO: returns list of frequent itemsets of the given size
+def getFrequentItemsets(items,set_size):
+    frequent = []
+    # TODO
     return frequent
 
 # Boolean: is the itemset's frequency greater than the support threshold?
