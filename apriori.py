@@ -7,24 +7,25 @@ import sys
 import csv
 import os
 
-TARGET_CONFIDENCE = 0.30
+TARGET_CONFIDENCE = 0.20
 TARGET_SUPPORT = 0.20
 DATASET = 'INTEGRATED-DATASET.csv'
 
 scriptdir = os.path.dirname(os.path.realpath(__file__))
 
 def main():
+
     # read config values from command line
     initCLI()
 
     # load data into application
     curated_csv = os.path.join(scriptdir, DATASET)
 
-    print('reading text...') # TESTING
+    # print('reading text...') # TESTING
     with open(curated_csv,'r') as f:
         raw = f.read()
 
-    print('parsing text into usable data...') # TESTING
+    # print('parsing text into usable data...') # TESTING
     transactions = []
     items = set()
     for t in raw.split('\n')[:-1]: # don't include last line (which is just an empty string)
@@ -33,45 +34,47 @@ def main():
         items |= new_itemset
 
     # This will keep track of frequent itemsets of each size (size-1 = index)
-    frequent = []
-    supports = []
+    frequent, frequent_supports, rules, confidences, rule_supports = [], [], [], [], []
 
-    print('Determining initial frequent items...') # TESTING
+    # print('Determining initial frequent items...') # TESTING
     initial_frequent, initial_supports = getInitialFrequentItems(transactions,items)
-    frequent.append(initial_frequent)
-    supports.append(initial_supports)
+    frequent.extend(initial_frequent)
+    frequent_supports.extend(initial_supports)
 
     # We only care about frequent items!
     items = set([x[0] for x in initial_frequent])
 
     set_size = 2
     cont = True
-    while cont: # TODO flesh out main loop, needs to record confidences
-        print('')
-        print('============== Size ' + str(set_size-1) + ' ==============')
-        printFrequentItemsets(frequent[set_size-2],supports[set_size-2])
+    previous_frequent = initial_frequent
+    while cont:
 
         # trim possible items
-        items = trimItems(frequent[set_size-2])
+        items = trimItems(previous_frequent)
 
         # Generate possible itemsets of this size
-        possible_itemsets = generatePossibleItemsets(items, frequent[set_size-2])
+        possible_itemsets = generatePossibleItemsets(items, previous_frequent)
 
         # Generate new frequent itemsets of this size and their supports
         new_frequent, new_supports = getFrequentItemsets(items, transactions, possible_itemsets, set_size)
-        frequent.append(new_frequent)
-        supports.append(new_supports)
+        frequent.extend(new_frequent)
+        frequent_supports.extend(new_supports)
+        previous_frequent = new_frequent
 
         # Generate high-confidence association rules
-        new_rules, new_confidences, new_supports = getAssociationRules(new_frequent, new_supports, transactions)
-
-        # print high-confidence association rules (if any exist)
-        if len(new_confidences) > 0:
-            printAssociationRules(new_rules, new_confidences, new_supports)
+        new_rules, new_confidences, new_rule_supports = getAssociationRules(new_frequent, new_supports, transactions)
+        rules.extend(new_rules)
+        confidences.extend(new_confidences)
+        rule_supports.extend(new_rule_supports)
 
         # continue?
-        cont = len(frequent[set_size-1]) > 0
+        cont = len(new_frequent) > 0
         set_size += 1
+
+    # printouts
+    printFrequentItemsets(frequent,frequent_supports)
+    if len(rules) > 0:
+        printAssociationRules(rules, confidences, rule_supports)
 
 def printAssociationRules(rules, confs, supps):
     if (TARGET_CONFIDENCE * 100).is_integer():
@@ -80,7 +83,7 @@ def printAssociationRules(rules, confs, supps):
         print('==High-confidence association rules (min_conf={0}%)'.format(TARGET_CONFIDENCE*100))
 
     for r,c,s in zip(rules,confs,supps):
-        print(str(r[0]) + '=>' + str([r[1]]) + ('(Conf: %.2f' % (c*100)) + '%, ' + ('Supp: %.2f' % (s*100)) + '%)')
+        print(str(r[0]) + ' => ' + str([r[1]]) + (' (Conf: %.2f' % (c*100)) + '%, ' + ('Supp: %.2f' % (s*100)) + '%)')
 
 def trimItems(itemsets):
     items = set()
@@ -94,7 +97,6 @@ def getAssociationRules(frequent, supports, transactions):
         for i in f:
             conf = getConfidence(set(f)-set([i]),i,transactions)
             if conf >= TARGET_CONFIDENCE:
-                # print(str(set(f)-set([i])) + '=>' + str(set([i])) + ', Conf=%.2f' % (conf*100) + '%') # TESTING
                 new_rules.append([list(set(f)-set([i])),i])
                 new_confidences.append(conf)
                 new_supports.append(s)
@@ -119,6 +121,45 @@ def printFrequentItemsets(frequent,supports):
     for f,s in zip(frequent,supports):
         print(str(f) + ", %.2f" % (s*100) + '%')
 
+def generatePossibleItemsets(items, frequent):
+    possible_itemsets = []
+    for s in frequent:
+        # list-comprehension to please C'thulhu
+        possible_itemsets.extend([list(set([i]) | set(s)) for i in items if i not in s])
+    possible_itemsets.sort()
+
+    # prune as to 2.1.1
+    pruned = []
+    for itemset in possible_itemsets:
+        valid = True
+
+        for removed_item in itemset:
+            subset = set(itemset) - set([removed_item])
+
+            if list(subset) not in frequent:
+                valid=False
+                break
+
+        if valid:
+            pruned.append(itemset)
+
+    # de-duplicate
+    pruned = deduplicate(pruned)
+
+    return pruned
+
+# de-duplicate a list of lists
+def deduplicate(a):
+    deduped = []
+    seen = set()
+    for t in a:
+        s = frozenset(t)
+        if s not in seen:
+            seen.add(s)
+            deduped.append(t)
+    return deduped
+
+
 def getInitialFrequentItems(transactions, items):
     frequent = []
     supports = []
@@ -142,23 +183,15 @@ def getFrequentItemsets(items,transactions,possible_itemsets,set_size):
 
     # Loop through possible itemsets
     for s in possible_itemsets:
-        ct = 0
 
         # Record itemset if it passes support threshold
         support = getSupport(transactions, set(s))
+
         if support >= TARGET_SUPPORT:
             frequent.append(s)
             supports.append(support)
 
     return frequent,supports
-
-def generatePossibleItemsets(items, frequent):
-    itemsets = []
-    for s in frequent:
-        # list-comprehension to please C'thulhu
-        itemsets.extend([list(set([i]) | set(s)) for i in items if i not in s])
-    itemsets.sort()
-    return list(itemsets for itemsets,_ in itertools.groupby(itemsets))
 
 # Returns float value of the support
 def getSupport(transactions,itemset):
