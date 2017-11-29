@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import pandas as pd
+import itertools
 import sys
 import csv
 import os
 
 TARGET_CONFIDENCE = 0.30
-TARGET_SUPPORT = 0.30
+TARGET_SUPPORT = 0.20
 DATASET = 'INTEGRATED-DATASET.csv'
 
 scriptdir = os.path.dirname(os.path.realpath(__file__))
@@ -46,7 +47,8 @@ def main():
     set_size = 2
     cont = True
     while cont: # TODO flesh out main loop, needs to record confidences
-        print('=========== Size ' + str(set_size-1) + ' ===========')
+        print('')
+        print('============== Size ' + str(set_size-1) + ' ==============')
         printFrequentItemsets(frequent[set_size-2],supports[set_size-2])
 
         # trim possible items
@@ -62,11 +64,23 @@ def main():
 
         # Generate high-confidence association rules
         new_rules, new_confidences, new_supports = getAssociationRules(new_frequent, new_supports, transactions)
-        # TODO do something with these
+
+        # print high-confidence association rules (if any exist)
+        if len(new_confidences) > 0:
+            printAssociationRules(new_rules, new_confidences, new_supports)
 
         # continue?
         cont = len(frequent[set_size-1]) > 0
         set_size += 1
+
+def printAssociationRules(rules, confs, supps):
+    if (TARGET_CONFIDENCE * 100).is_integer():
+        print('==High-confidence association rules (min_conf={0}%)'.format(int(TARGET_CONFIDENCE*100)))
+    else:
+        print('==High-confidence association rules (min_conf={0}%)'.format(TARGET_CONFIDENCE*100))
+
+    for r,c,s in zip(rules,confs,supps):
+        print(str(r[0]) + '=>' + str([r[1]]) + ('(Conf: %.2f' % (c*100)) + '%, ' + ('Supp: %.2f' % (s*100)) + '%)')
 
 def trimItems(itemsets):
     items = set()
@@ -80,7 +94,7 @@ def getAssociationRules(frequent, supports, transactions):
         for i in f:
             conf = getConfidence(set(f)-set([i]),i,transactions)
             if conf >= TARGET_CONFIDENCE:
-                print(str(set(f)-set([i])) + '=>' + str(set([i])) + ', Conf=%.2f' % conf + '%')
+                # print(str(set(f)-set([i])) + '=>' + str(set([i])) + ', Conf=%.2f' % (conf*100) + '%') # TESTING
                 new_rules.append([list(set(f)-set([i])),i])
                 new_confidences.append(conf)
                 new_supports.append(s)
@@ -121,7 +135,7 @@ def getInitialFrequentItems(transactions, items):
 
     return frequent, supports
 
-# TODO: returns list of frequent itemsets of the given size
+# returns list of frequent itemsets of the given size
 def getFrequentItemsets(items,transactions,possible_itemsets,set_size):
     frequent = []
     supports = []
@@ -143,7 +157,8 @@ def generatePossibleItemsets(items, frequent):
     for s in frequent:
         # list-comprehension to please C'thulhu
         itemsets.extend([list(set([i]) | set(s)) for i in items if i not in s])
-    return itemsets
+    itemsets.sort()
+    return list(itemsets for itemsets,_ in itertools.groupby(itemsets))
 
 # Returns float value of the support
 def getSupport(transactions,itemset):
