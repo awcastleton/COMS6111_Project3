@@ -76,6 +76,8 @@ def main():
     if len(rules) > 0:
         printAssociationRules(rules, confidences, rule_supports)
 
+    # TODO: output to output.txt instead of printout
+
 def printAssociationRules(rules, confs, supps):
     if (TARGET_CONFIDENCE * 100).is_integer():
         print('==High-confidence association rules (min_conf={0}%)'.format(int(TARGET_CONFIDENCE*100)))
