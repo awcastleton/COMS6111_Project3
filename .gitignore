@@ -5,4 +5,4 @@
 .Python
 pip-selfcheck.json
 
-data-curation/dob*
+data-curation/DOB_*
