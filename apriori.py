@@ -123,7 +123,7 @@ def printFrequentItemsets(frequent,supports):
         print('==Frequent itemsets (min_sup={0}%)'.format(int(TARGET_SUPPORT * 100)) )
     else:
         print('==Frequent itemsets (min_sup={0}%)'.format(TARGET_SUPPORT * 100) )
-    for f,s in zip(frequent,supports):
+    for s,f in sorted(zip(supports,frequent), reverse=True):
         print(str(f) + ", %.2f" % (s*100) + '%')
 
 # Item set choosing
