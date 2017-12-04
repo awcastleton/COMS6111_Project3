@@ -21,6 +21,7 @@ def main():
     # load data into application
     curated_csv = os.path.join(scriptdir, DATASET)
 
+    print ("Loading data ...")
     with open(curated_csv,'r') as f:
         raw = f.read()
 
@@ -222,6 +223,11 @@ def initCLI():
     # load minimum confidence
     global TARGET_CONFIDENCE
     if len(sys.argv) > 4: TARGET_CONFIDENCE = float(sys.argv[3])
+
+    # printout
+    print ("Dataset:                 " + DATASET)
+    print ("Target Confidence:       {0}%".format(int(TARGET_CONFIDENCE * 100)))
+    print ("Target Support:          {0}%".format(int(TARGET_SUPPORT * 100)))
 
 if __name__ == '__main__':
     if len(sys.argv) > 1: DATASET = sys.argv[1]
