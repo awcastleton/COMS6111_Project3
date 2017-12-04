@@ -84,7 +84,7 @@ def printAssociationRules(rules, confs, supps):
     else:
         print('==High-confidence association rules (min_conf={0}%)'.format(TARGET_CONFIDENCE*100))
 
-    for r,c,s in zip(rules,confs,supps):
+    for c,s,r in sorted(zip(confs,supps,rules), reverse=True):
         print(str(r[0]) + ' => ' + str([r[1]]) + (' (Conf: %.2f' % (c*100)) + '%, ' + ('Supp: %.2f' % (s*100)) + '%)')
 
 # Trim the overall item sets
