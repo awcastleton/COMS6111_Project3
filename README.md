@@ -9,7 +9,6 @@
 * apriori.py: The Python script in which Apriori exists
 * example-run.txt: The output from the detailed run
 * README.md: this file
-* 311-service-requests-data.py: The script which builds our curated INTEGRATED-DATASET.csv
 * INTEGRATED-DATASET.csv: Our customized dataset from the NYC Open Data Site
 * output.txt: The program's output file
 
@@ -24,11 +23,11 @@
 
 ## Connecting to the Virtual Machine
 
-External IP: 35.185.57.0 <br/>
+External IP: 104.196.62.59  <br/>
 Username: project3 <br/>
 password: passw0rd <br/>
 
-ssh project3@35.185.57.0 <br/>
+ssh project3@104.196.62.59  <br/>
 passw0rd
 
 ## Running the Code
