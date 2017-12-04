@@ -25,6 +25,7 @@ def main():
     with open(curated_csv,'r') as f:
         raw = f.read()
 
+    print ("Processing ... ")
     transactions = []
     items = set()
     for t in raw.split('\n')[:-1]: # don't include last line (which is just an empty string)
@@ -76,17 +77,17 @@ def main():
     if len(rules) > 0:
         printAssociationRules(rules, confidences, rule_supports)
 
-    # TODO: output to output.txt instead of printout
+    print('done')
 
 # Print confidence and support percentages
 def printAssociationRules(rules, confs, supps):
     if (TARGET_CONFIDENCE * 100).is_integer():
-        print('==High-confidence association rules (min_conf={0}%)'.format(int(TARGET_CONFIDENCE*100)))
+        log('==High-confidence association rules (min_conf={0}%)'.format(int(TARGET_CONFIDENCE*100)))
     else:
-        print('==High-confidence association rules (min_conf={0}%)'.format(TARGET_CONFIDENCE*100))
+        log('==High-confidence association rules (min_conf={0}%)'.format(TARGET_CONFIDENCE*100))
 
     for c,s,r in sorted(zip(confs,supps,rules), reverse=True):
-        print(str(r[0]) + ' => ' + str([r[1]]) + (' (Conf: %.2f' % (c*100)) + '%, ' + ('Supp: %.2f' % (s*100)) + '%)')
+        log(str(r[0]) + ' => ' + str([r[1]]) + (' (Conf: %.2f' % (c*100)) + '%, ' + ('Supp: %.2f' % (s*100)) + '%)')
 
 # Trim the overall item sets
 def trimItems(itemsets):
@@ -121,11 +122,11 @@ def getConfidence(s,i,transactions):
 # Print item sets and stats
 def printFrequentItemsets(frequent,supports):
     if (TARGET_SUPPORT * 100).is_integer():
-        print('==Frequent itemsets (min_sup={0}%)'.format(int(TARGET_SUPPORT * 100)) )
+        log('==Frequent itemsets (min_sup={0}%)'.format(int(TARGET_SUPPORT * 100)) )
     else:
-        print('==Frequent itemsets (min_sup={0}%)'.format(TARGET_SUPPORT * 100) )
+        log('==Frequent itemsets (min_sup={0}%)'.format(TARGET_SUPPORT * 100) )
     for s,f in sorted(zip(supports,frequent), reverse=True):
-        print(str(f) + ", %.2f" % (s*100) + '%')
+        log(str(f) + ", %.2f" % (s*100) + '%')
 
 # Item set choosing
 def generatePossibleItemsets(items, frequent):
@@ -210,6 +211,11 @@ def getSupport(transactions,itemset):
 
     return (ct / len(transactions))
 
+# logging function: prints out to file in addition to system if specified
+def log(s):
+    print(s)
+    with open('output.txt','a') as t:
+        t.write(s + "\n")
 
 def initCLI():
     # load dataset filename
@@ -225,9 +231,10 @@ def initCLI():
     if len(sys.argv) > 4: TARGET_CONFIDENCE = float(sys.argv[3])
 
     # printout
-    print ("Dataset:                 " + DATASET)
-    print ("Target Confidence:       {0}%".format(int(TARGET_CONFIDENCE * 100)))
-    print ("Target Support:          {0}%".format(int(TARGET_SUPPORT * 100)))
+    open('output.txt','w')
+    log ("Dataset:                 " + DATASET)
+    log ("Target Confidence:       {0}%".format(int(TARGET_CONFIDENCE * 100)))
+    log ("Target Support:          {0}%".format(int(TARGET_SUPPORT * 100)))
 
 if __name__ == '__main__':
     if len(sys.argv) > 1: DATASET = sys.argv[1]

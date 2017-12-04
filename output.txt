@@ -1,0 +1,97 @@
+Dataset:                 INTEGRATED-DATASET.csv
+Target Confidence:       80%
+Target Support:          10%
+==Frequent itemsets (min_sup=10%)
+['Noise - Residential'], 99.99%
+['Noise - Residential', 'HEAT/HOT WATER'], 75.84%
+['HEAT/HOT WATER'], 75.84%
+['Loud Music/Party', 'Noise - Residential'], 64.66%
+['Loud Music/Party'], 64.66%
+['ENTIRE BUILDING', 'Noise - Residential', 'HEAT/HOT WATER'], 63.37%
+['ENTIRE BUILDING', 'Noise - Residential'], 63.37%
+['ENTIRE BUILDING', 'HEAT/HOT WATER'], 63.37%
+['ENTIRE BUILDING'], 63.37%
+['Loud Music/Party', 'Noise - Residential', 'HEAT/HOT WATER'], 50.32%
+['Loud Music/Party', 'HEAT/HOT WATER'], 50.32%
+['Loud Music/Party', 'ENTIRE BUILDING', 'Noise - Residential', 'HEAT/HOT WATER'], 44.71%
+['Loud Music/Party', 'ENTIRE BUILDING', 'Noise - Residential'], 44.71%
+['Loud Music/Party', 'ENTIRE BUILDING', 'HEAT/HOT WATER'], 44.71%
+['Loud Music/Party', 'ENTIRE BUILDING'], 44.71%
+['89-21 ELMHURST AVENUE', 'Noise - Residential'], 37.09%
+['89-21 ELMHURST AVENUE'], 37.09%
+['89-21 ELMHURST AVENUE', 'Noise - Residential', 'HEAT/HOT WATER'], 36.87%
+['89-21 ELMHURST AVENUE', 'HEAT/HOT WATER'], 36.87%
+['89-21 ELMHURST AVENUE', 'ENTIRE BUILDING', 'Noise - Residential', 'HEAT/HOT WATER'], 36.87%
+['89-21 ELMHURST AVENUE', 'ENTIRE BUILDING', 'Noise - Residential'], 36.87%
+['89-21 ELMHURST AVENUE', 'ENTIRE BUILDING', 'HEAT/HOT WATER'], 36.87%
+['89-21 ELMHURST AVENUE', 'ENTIRE BUILDING'], 36.87%
+['89-21 ELMHURST AVENUE', 'Noise - Residential', 'Loud Music/Party'], 30.91%
+['89-21 ELMHURST AVENUE', 'Loud Music/Party'], 30.91%
+['89-21 ELMHURST AVENUE', 'HEAT/HOT WATER', 'Noise - Residential', 'Loud Music/Party'], 30.72%
+['89-21 ELMHURST AVENUE', 'HEAT/HOT WATER', 'Loud Music/Party'], 30.72%
+['89-21 ELMHURST AVENUE', 'HEAT/HOT WATER', 'ENTIRE BUILDING', 'Loud Music/Party'], 30.72%
+['89-21 ELMHURST AVENUE', 'ENTIRE BUILDING', 'Noise - Residential', 'Loud Music/Party'], 30.72%
+['89-21 ELMHURST AVENUE', 'ENTIRE BUILDING', 'Loud Music/Party'], 30.72%
+['Noise - Residential', 'Banging/Pounding'], 30.64%
+['Banging/Pounding'], 30.64%
+['Noise - Residential', 'Banging/Pounding', 'HEAT/HOT WATER'], 23.11%
+['Banging/Pounding', 'HEAT/HOT WATER'], 23.11%
+['ENTIRE BUILDING', 'Noise - Residential', 'Banging/Pounding'], 17.20%
+['ENTIRE BUILDING', 'Banging/Pounding', 'HEAT/HOT WATER'], 17.20%
+['ENTIRE BUILDING', 'Banging/Pounding'], 17.20%
+['APARTMENT ONLY', 'Noise - Residential', 'HEAT/HOT WATER'], 12.48%
+['APARTMENT ONLY', 'Noise - Residential'], 12.48%
+['APARTMENT ONLY', 'HEAT/HOT WATER'], 12.48%
+['APARTMENT ONLY'], 12.48%
+==High-confidence association rules (min_conf=80%)
+['HEAT/HOT WATER'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 75.84%)
+['Loud Music/Party'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 64.66%)
+['ENTIRE BUILDING', 'Noise - Residential'] => ['HEAT/HOT WATER'] (Conf: 100.00%, Supp: 63.37%)
+['ENTIRE BUILDING', 'HEAT/HOT WATER'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 63.37%)
+['ENTIRE BUILDING'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 63.37%)
+['ENTIRE BUILDING'] => ['HEAT/HOT WATER'] (Conf: 100.00%, Supp: 63.37%)
+['Loud Music/Party', 'HEAT/HOT WATER'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 50.32%)
+['Loud Music/Party', 'ENTIRE BUILDING', 'Noise - Residential'] => ['HEAT/HOT WATER'] (Conf: 100.00%, Supp: 44.71%)
+['Loud Music/Party', 'ENTIRE BUILDING', 'HEAT/HOT WATER'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 44.71%)
+['Loud Music/Party', 'ENTIRE BUILDING'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 44.71%)
+['Loud Music/Party', 'ENTIRE BUILDING'] => ['HEAT/HOT WATER'] (Conf: 100.00%, Supp: 44.71%)
+['89-21 ELMHURST AVENUE'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 37.09%)
+['89-21 ELMHURST AVENUE', 'Noise - Residential', 'HEAT/HOT WATER'] => ['ENTIRE BUILDING'] (Conf: 100.00%, Supp: 36.87%)
+['89-21 ELMHURST AVENUE', 'HEAT/HOT WATER'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 36.87%)
+['89-21 ELMHURST AVENUE', 'HEAT/HOT WATER'] => ['ENTIRE BUILDING'] (Conf: 100.00%, Supp: 36.87%)
+['89-21 ELMHURST AVENUE', 'ENTIRE BUILDING', 'Noise - Residential'] => ['HEAT/HOT WATER'] (Conf: 100.00%, Supp: 36.87%)
+['89-21 ELMHURST AVENUE', 'ENTIRE BUILDING', 'HEAT/HOT WATER'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 36.87%)
+['89-21 ELMHURST AVENUE', 'ENTIRE BUILDING'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 36.87%)
+['89-21 ELMHURST AVENUE', 'ENTIRE BUILDING'] => ['HEAT/HOT WATER'] (Conf: 100.00%, Supp: 36.87%)
+['89-21 ELMHURST AVENUE', 'Loud Music/Party'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 30.91%)
+['89-21 ELMHURST AVENUE', 'HEAT/HOT WATER', 'Loud Music/Party'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 30.72%)
+['89-21 ELMHURST AVENUE', 'HEAT/HOT WATER', 'Loud Music/Party'] => ['ENTIRE BUILDING'] (Conf: 100.00%, Supp: 30.72%)
+['89-21 ELMHURST AVENUE', 'ENTIRE BUILDING', 'Loud Music/Party'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 30.72%)
+['89-21 ELMHURST AVENUE', 'ENTIRE BUILDING', 'Loud Music/Party'] => ['HEAT/HOT WATER'] (Conf: 100.00%, Supp: 30.72%)
+['Banging/Pounding'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 30.64%)
+['Banging/Pounding', 'HEAT/HOT WATER'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 23.11%)
+['ENTIRE BUILDING', 'Banging/Pounding'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 17.20%)
+['ENTIRE BUILDING', 'Banging/Pounding'] => ['HEAT/HOT WATER'] (Conf: 100.00%, Supp: 17.20%)
+['APARTMENT ONLY', 'Noise - Residential'] => ['HEAT/HOT WATER'] (Conf: 100.00%, Supp: 12.48%)
+['APARTMENT ONLY', 'HEAT/HOT WATER'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 12.48%)
+['APARTMENT ONLY'] => ['Noise - Residential'] (Conf: 100.00%, Supp: 12.48%)
+['APARTMENT ONLY'] => ['HEAT/HOT WATER'] (Conf: 100.00%, Supp: 12.48%)
+['89-21 ELMHURST AVENUE', 'Noise - Residential'] => ['HEAT/HOT WATER'] (Conf: 99.40%, Supp: 36.87%)
+['89-21 ELMHURST AVENUE', 'Noise - Residential'] => ['ENTIRE BUILDING'] (Conf: 99.40%, Supp: 36.87%)
+['89-21 ELMHURST AVENUE'] => ['HEAT/HOT WATER'] (Conf: 99.40%, Supp: 36.87%)
+['89-21 ELMHURST AVENUE'] => ['ENTIRE BUILDING'] (Conf: 99.40%, Supp: 36.87%)
+['89-21 ELMHURST AVENUE', 'Noise - Residential', 'Loud Music/Party'] => ['HEAT/HOT WATER'] (Conf: 99.40%, Supp: 30.72%)
+['89-21 ELMHURST AVENUE', 'Noise - Residential', 'Loud Music/Party'] => ['ENTIRE BUILDING'] (Conf: 99.40%, Supp: 30.72%)
+['89-21 ELMHURST AVENUE', 'Loud Music/Party'] => ['HEAT/HOT WATER'] (Conf: 99.40%, Supp: 30.72%)
+['89-21 ELMHURST AVENUE', 'Loud Music/Party'] => ['ENTIRE BUILDING'] (Conf: 99.40%, Supp: 30.72%)
+['Loud Music/Party', 'Noise - Residential', 'HEAT/HOT WATER'] => ['ENTIRE BUILDING'] (Conf: 88.85%, Supp: 44.71%)
+['Loud Music/Party', 'HEAT/HOT WATER'] => ['ENTIRE BUILDING'] (Conf: 88.85%, Supp: 44.71%)
+['Noise - Residential', 'HEAT/HOT WATER'] => ['ENTIRE BUILDING'] (Conf: 83.55%, Supp: 63.37%)
+['HEAT/HOT WATER'] => ['ENTIRE BUILDING'] (Conf: 83.55%, Supp: 63.37%)
+['89-21 ELMHURST AVENUE', 'Noise - Residential'] => ['Loud Music/Party'] (Conf: 83.33%, Supp: 30.91%)
+['89-21 ELMHURST AVENUE'] => ['Loud Music/Party'] (Conf: 83.33%, Supp: 30.91%)
+['89-21 ELMHURST AVENUE', 'Noise - Residential', 'HEAT/HOT WATER'] => ['Loud Music/Party'] (Conf: 83.33%, Supp: 30.72%)
+['89-21 ELMHURST AVENUE', 'HEAT/HOT WATER'] => ['Loud Music/Party'] (Conf: 83.33%, Supp: 30.72%)
+['89-21 ELMHURST AVENUE', 'ENTIRE BUILDING', 'Noise - Residential'] => ['Loud Music/Party'] (Conf: 83.33%, Supp: 30.72%)
+['89-21 ELMHURST AVENUE', 'ENTIRE BUILDING', 'HEAT/HOT WATER'] => ['Loud Music/Party'] (Conf: 83.33%, Supp: 30.72%)
+['89-21 ELMHURST AVENUE', 'ENTIRE BUILDING'] => ['Loud Music/Party'] (Conf: 83.33%, Supp: 30.72%)
