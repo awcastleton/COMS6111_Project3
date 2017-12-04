@@ -8,7 +8,7 @@ import os
 
 scriptdir = os.path.dirname(os.path.realpath(__file__))
 rawdata_csv = os.path.join(scriptdir,'Times_Square_Property_Data__Commercial_and_Retail_properties_.csv')
-curated_csv = os.path.join(scriptdir,'INTEGRATED-DATASET.csv')
+curated_csv = os.path.join(scriptdir,'../INTEGRATED-DATASET.csv')
 
 def main():
     # Allow max character length of string fields to be long enough
